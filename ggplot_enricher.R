@@ -67,10 +67,11 @@ grafico <- all_p_adjust_0.05_path_arranged %>%
   # estabelece como eixo y o log_adjusted que ? o -10log do p valor ajustado
   # como a cor de preenchimento da barra depende do status fill vai dentro do aes e ? igual status, mesma coisa para o color, queremos que o contorno da barra seja da mesma cor que a barra
   geom_col(aes(x = Term, y = log_adjusted, fill = status, color = status)) +
-  # scale_fill_brewer determina a palheta de cores para o preenchimento da barra. direction = -1 para os genes down ficarem azuis e up vermelhos, se tirar esse argumento as cores ficam invertidas
-  scale_fill_brewer(palette = "Set1", direction = -1) +
-  # scale_colour determina a palheta para contorno das barras, como queremos o preenchimento e o contorno de cores iguais, os argumentos de scale fill e scale colour sao os mesmos
-  scale_colour_brewer(palette = "Set1", direction = -1) +
+  # scale_fill_manual determina as cores das barras dentro de values. A ordem das cores sera dada de acordo com a ordem alfabetica da variavel qualitativa, down e up, portanto a primeira cor de value deve ser azul (down, d vem antes de u) e a segunda vermelha (up, u vem depois de d), porque quero deixar as vias down azul e as up vermelho
+  # escolhi as cores no site https://colorbrewer2.org/#type=sequential&scheme=Reds&n=9
+  scale_fill_manual(values = c("#0fa7e5", "#cb181d")) +
+  # scale_colour_manual determina a cor do contorno das barras, como queremos o preenchimento e o contorno de cores iguais, os argumentos de scale fill e scale colour sao os mesmos
+  scale_colour_manual(values = c("#0fa7e5", "#cb181d")) +
   # adiciona nome nos eixos x, y e o titulo
 labs(x = "Reactome pathway name",
      y = "-log10 adjusted p-value",

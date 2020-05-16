@@ -39,6 +39,9 @@ all_p_adjust_0.05_pathways <- rbind(down_significant, up_significant)
 all_p_adjust_0.05_pathways <- all_p_adjust_0.05_pathways %>% 
   mutate(log_adjusted = -log10(`Adjusted P-value`))
 
+# retirando Homo sapiens do nome das vias
+all_p_adjust_0.05_pathways$Term <- str_remove(all_p_adjust_0.05_pathways$Term, "Homo sapiens")
+
 # organiza as vias na ordem que eu quero plotar o grafico
 # ordem crescente de acordo com status ele vai organizar por ordem alfabetica, primeiro Down (D) depois Up (U) e depois de acordo com o valor de log em ordem crescente tambem. Quanto maior o log menor o p
 all_p_adjust_0.05_path_arranged <- all_p_adjust_0.05_pathways %>% 
@@ -51,7 +54,7 @@ caracter <- apply(all_p_adjust_0.05_path_arranged, 2, as.character)
 nome_vias_vetor <- caracter[,1]
 
 # transforma em fator ordenado os termos
-# como a ordem esta correta pq deu arrange e depois transformou cada nome em character e depois colocou em um vetor temos um vetor com a ordem correta dos meus levels dentro de nome_vias_vetor, entao é só colocar isso dentro de c de levels
+# como a ordem esta correta pq deu arrange e depois transformou cada nome em character e depois colocou em um vetor temos um vetor com a ordem correta dos meus levels dentro de nome_vias_vetor, entao ? s? colocar isso dentro de c de levels
 # o mutate transformara a coluna Term em vetor com os niveis ordenados de acordo com a ordem contida de nomes_vias_vetor que ja foi ordenado com o arrange la em cima
 all_p_adjust_0.05_path_arranged <- all_p_adjust_0.05_path_arranged %>%
   mutate(Term = factor(Term, levels = c(nome_vias_vetor), ordered = TRUE))
@@ -61,8 +64,8 @@ grafico <- all_p_adjust_0.05_path_arranged %>%
   # abre a janela grafica
   ggplot() +
   # estabelece como eixo x o Term que e o nome das vias
-  # estabelece como eixo y o log_adjusted que é o -10log do p valor ajustado
-  # como a cor de preenchimento da barra depende do status fill vai dentro do aes e é igual status, mesma coisa para o color, queremos que o contorno da barra seja da mesma cor que a barra
+  # estabelece como eixo y o log_adjusted que ? o -10log do p valor ajustado
+  # como a cor de preenchimento da barra depende do status fill vai dentro do aes e ? igual status, mesma coisa para o color, queremos que o contorno da barra seja da mesma cor que a barra
   geom_col(aes(x = Term, y = log_adjusted, fill = status, color = status)) +
   # scale_fill_brewer determina a palheta de cores para o preenchimento da barra. direction = -1 para os genes down ficarem azuis e up vermelhos, se tirar esse argumento as cores ficam invertidas
   scale_fill_brewer(palette = "Set1", direction = -1) +
@@ -72,9 +75,9 @@ grafico <- all_p_adjust_0.05_path_arranged %>%
 labs(x = "Reactome pathway name",
      y = "-log10 adjusted p-value",
      title = "Enriched pathways for Chikungunya infection") +
-  # rota o grafico 90°
+  # rota o grafico 90?
   coord_flip() +
-  # retira a grade de trás, deixando fundo branco
+  # retira a grade de tr?s, deixando fundo branco
   theme_classic()
 
 # salva grafico no formato tiff
@@ -100,5 +103,5 @@ grafico %>%
 # carrega o pacote de cores que ggplot usa
 # library(RColorBrewer)
 
-# verifica o nome e as opçoes da paleta de cores
+# verifica o nome e as op?oes da paleta de cores
 # display.brewer.all()

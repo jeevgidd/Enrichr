@@ -16,6 +16,16 @@ reactome_down <- read_delim("C:/Users/vanes/CHIKV_Natalia/Enrichr/down_regulated
 # abre o arquivo de vias enriquecidas com genes superexpressos
 reactome_up <- read_delim("C:/Users/vanes/CHIKV_Natalia/Enrichr/up_regulated_pathways/Reactome_2016_table (1).txt", delim = "\t", col_names = T)
 
+# regex for reactome_down
+id <- sub(".*Homo sapiens ", "", reactome_down$Term)
+path <-gsub("Homo sa.*","", reactome_down$Term)
+reactome_down$Term <- paste0(path, "(", id, ")")
+
+# regex for reactome_up
+id1 <- sub(".*Homo sapiens ", "", reactome_up$Term)
+path1 <-gsub("Homo sa.*","", reactome_up$Term)
+reactome_up$Term <- paste0(path1, "(", id1, ")")
+
 # filtra apenas vias com p-adjusted < 0.05 para os down
 down_significant <- reactome_down %>% 
   filter(`Adjusted P-value` < 0.05)
